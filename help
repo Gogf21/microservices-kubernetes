@@ -1,0 +1,10 @@
+helm install user-management . -f values-dev.yaml -n exam-kyznetsov --create-namespace
+helm lint .
+helm template user-management . -f values-dev.yaml --debug
+helm install user-management . -f values-dev.yaml -n exam-kyznetsov --create-namespace
+
+#PODN(T
+helm upgrade --install user-management . \
+  --namespace exam-kyznetsov \
+  --create-namespace \
+  --values ./values-dev.yaml

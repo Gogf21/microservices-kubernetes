@@ -1,0 +1,102 @@
+
+replicaCount: 2
+
+image:
+  auth: python:3.11-slim
+  profile: python:3.11-slim
+  notification: python:3.11-slim
+  db: postgres:15-alpine
+
+probes:
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  readinessInitialDelaySeconds: 10
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+service:
+  auth:
+    port: 8082
+    targetPort: 5000
+    nodePort: 30082
+  profile:
+    port: 8080
+    targetPort: 5000
+  notification:
+    port: 8081
+    targetPort: 5000
+  db:
+    port: 5432
+    targetPort: 5432
+
+ingress:
+  enabled: true
+  host: app-06.example.com
+  tls:
+    enabled: true
+    secretName: app-tls-secret
+    cert: |
+      -----BEGIN CERTIFICATE-----
+      MIIDGzCCAgOgAwIBAgIUEn/xEVvSk/78nCaJKDjmNn0JJCowDQYJKoZIhvcNAQEL
+      BQAwHTEbMBkGA1UEAwwSYXBwLTA2LmV4YW1wbGUuY29tMB4XDTI2MDYyODEzMDA0
+      MloXDTI3MDYyODEzMDA0MlowHTEbMBkGA1UEAwwSYXBwLTA2LmV4YW1wbGUuY29t
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZm0pPc6GdgNQv2GI4s5
+      K0/+bK77+Jlhdk6mN5dzZxBUUKZUaghH+g7Ea2jr1uJXkakr6m0BbPBz3gp4T2SU
+      JkKuMRtbcGKUWEAH8n7teWvMz+zEtYrjfR0HRbN4vWx8UcoK2BrkM4IlpxBP2Cr5
+      761EjOEBMgYpKRwYC1+5RNfkpaKOibwE8VKBKTOGK4tJirnNPiw/2GU3aYQquf5e
+      jZ5Mt2iZMEnOoiiOaeslfA+4Y8RIoltCqrYOC997I7Y8eZezaF265fCdge1IQO1h
+      bppraxCLWNJZlpbb4mPJlmPV0WWVyCEn5tFO+LUudE0tGvE7D6YyMog/m2Rawgdd
+      xQIDAQABo1MwUTAdBgNVHQ4EFgQU+qVydLb2E4qykQ5lnwc61FdGl18wHwYDVR0j
+      BBgwFoAU+qVydLb2E4qykQ5lnwc61FdGl18wDwYDVR0TAQH/BAUwAwEB/zANBgkq
+      hkiG9w0BAQsFAAOCAQEAMojGh6UMD13nmXIqma2Njz74FAEuN67QcfauWz/1OvtC
+      dHjTm+llgxeCGtvnZnJrZ0p6jnMkCv/K68uJOwJuMCKGuQR3yr521bdNi1Nw1d4s
+      Jo+gXpPncUnxj3gU9Jb9jDnC4mZQCB4y/YgEoUSDaSRLii2UdlP/3sQBe9wUD1Up
+      osqOcag+6UXbm8v6ac42Z3SMcJ02AR7TzsKhsQulhohGa7TvM1bXWuGnvbKusnHg
+      XDV3tGhc7+YE80wq0oUS9V6C3mZc6kUZWcWx/gbrYev4ke3HyiJAIjoH4nz5aLus
+      kchF9oddjeXJ+VAXe83rhydcTWeCggEYqoep3/JIuw==
+      -----END CERTIFICATE-----
+    key: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDJmbSk9zoZ2A1C
+      /YYjizkrT/5srvv4mWF2TqY3l3NnEFRQplRqCEf6DsRraOvW4leRqSvqbQFs8HPe
+      CnhPZJQmQq4xG1twYpRYQAfyfu15a8zP7MS1iuN9HQdFs3i9bHxRygrYGuQzgiWn
+      EE/YKvnvrUSM4QEyBikpHBgLX7lE1+Sloo6JvATxUoEpM4Yri0mKuc0+LD/YZTdp
+      hCq5/l6Nnky3aJkwSc6iKI5p6yV8D7hjxEiiW0Kqtg4L33sjtjx5l7NoXbrl8J2B
+      7UhA7WFummtrEItY0lmWltviY8mWY9XRZZXIISfm0U74tS50TS0a8TsPpjIyiD+b
+      ZFrCB13FAgMBAAECggEAAahNw9EbTUMl0zVrjWAXLVE7r3NzZUOVVehAA/pEMu2U
+      227GpJ0UbUyfK54eS125aDGxx4p61BqYiNOofLnx70+XpKRS2ouoC/R4z89uuW/4
+      emey5VEWXVJEsRDCQOQ0zOUCQzQv1tUgZRDPIJLQxJ3SJSbratisnspDz8k8/XLr
+      Fx87qraQPaC/Ey4oL5RrjjhaAsNsEek6BmkHCLMPt+s5uVZYDZ3q6HIo4zuLm4Jl
+      YV0eHPLhyaOGLuORAvzuZgAIrzwQL2WayN084JP0VGoLVKVtdKHXYK66KnUH90h6
+      +98C9Gpty6TsZb/9IlOVlMSIU8eG6d1vf/YjKqcOGQKBgQDw9cJEx1U22uWVmao8
+      Qs1omZcZHazWsRuEr+B4FrVUMDzDGqgyyTFLLae2PymfVX4BojQlSEMexDRdQaK7
+      BSPGZwh6RjayC4YojBbcm1RapsLtn+1Sq3YMJDptiTtxFk6f4OrTmz8ESSI6lfs0
+      q9j+CzkbbQecOMLAdtJDa219nQKBgQDWLweStBP4bZBx6SVCYSKzAzVBeYystrNg
+      uji6kUpzu64tDUjJWljk8ms54fzzeCuWiQzvdzzWP0k43LpPVJ5Jp452XOkih2Uv
+      ENRx4nej2HBJPcVSmI0yNUVXOvWmQiGEKwBTMGIf4sNsmOsZxSf7vTECztXzqozS
+      sevQ1Ej8SQKBgQDedXYSe5lfmH4nPIQfOGldbZdDF9OPLlnCiYGKPSTRgetHESBC
+      Kt84kgDpT60ErjA0H+VWmj1ldS0G/+bWFOuva0Y3ZQVwIRWN76/Xogwh2R3Ttjer
+      gCLvGK9cmzrmr/qMvmDuVcC7Gy3fusH+Ib2m5QOnH2TMRNcAS3LZzZ97PQKBgDT2
+      oDrIyP9vqH5iltIZTwlRS8QLGJxE+Yp7wjdwYibITEPbuxn/e2fyAk3n8jMKjkzF
+      SyuUIrkgIS0sd+3SEOpJwtLGGuhs7rp6wO4AgHFFvk5+NeM80f2Oar0tWT1psPwL
+      3iK0Hi+gVY7vKYPP2xlHKW12VDXTAMvBL30OYZXxAoGBAMOmJ+NNjQSxXLpVDQEd
+      h1hFZkE0NMjSYoG7GfHV4gdhkq7y6AH5CTh0bu6JUdA8XqEd8ZQ1dlAgFW6oQSdv
+      cdlSrWhNuDM36yAvSmQaCw57uiZdye6++VS1hCPMHJWB3MzXypDkJQa2qEBQWbKH
+      gQT4G8ltuCZIc0ZLSxlsOGKG
+      -----END PRIVATE KEY-----
+
+config:
+  logLevel: "info"
+  loginPageTitle: "User Management System"
+  loginWelcome: "Welcome to Microservices Demo"
+  loginButton: "Sign In"
+  profileTitle: "User Profile"
+  profileServiceUrl: "http://profile-service:8080"
+  notificationServiceUrl: "http://notification-service:8081"
+  authServiceUrl: "http://auth-service:8082"

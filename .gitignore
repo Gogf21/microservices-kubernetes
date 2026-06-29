@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+env/
+.venv/
+
+# Helm
+*.tgz
+charts/
+Chart.lock
+*.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Логи
+*.log
+
+# Временные файлы
+*.tmp
+*.temp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# K8s secrets (но мы тестовые не скрываем)
+# secrets/tls.key
+# secrets/tls.crt
+secrets/

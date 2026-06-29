@@ -1,0 +1,3 @@
+eval $(minikube docker-env)
+cd ~/kuber/exam-kyznetsov/services/profile-service
+docker build -t profile-service:latest .

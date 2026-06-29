@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  LOGIN_PAGE_TITLE: {{ .Values.config.loginPageTitle | quote }}
+  LOGIN_WELCOME: {{ .Values.config.loginWelcome | quote }}
+  LOGIN_BUTTON: {{ .Values.config.loginButton | quote }}
+  PROFILE_TITLE: {{ .Values.config.profileTitle | quote }}
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+  PROFILE_SERVICE_URL: {{ .Values.config.profileServiceUrl | quote }}
+  NOTIFICATION_SERVICE_URL: {{ .Values.config.notificationServiceUrl | quote }}
+  AUTH_SERVICE_URL: {{ .Values.config.authServiceUrl | quote }}

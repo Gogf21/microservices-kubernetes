@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: postgres-client
+        image: postgres:15-alpine
+        command:
+        - /bin/sh
+        - -c
+        - |
+          PGPASSWORD=$DB_PASSWORD psql -h postgres-db -U admin -d userdb <<EOF
+          CREATE TABLE IF NOT EXISTS users (
+              id SERIAL PRIMARY KEY,
+              username VARCHAR(100) UNIQUE NOT NULL,
+              password VARCHAR(255) NOT NULL,
+              email VARCHAR(255),
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS sessions (
+              id SERIAL PRIMARY KEY,
+              user_id INTEGER REFERENCES users(id),
+              token VARCHAR(500) UNIQUE NOT NULL,
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              expires_at TIMESTAMP
+          );
+
+          INSERT INTO users (username, password, email)
+          VALUES ('admin', 'admin123', 'admin@example.com')
+          ON CONFLICT (username) DO NOTHING;
+
+          INSERT INTO users (username, password, email)
+          VALUES ('user', 'user123', 'user@example.com')
+          ON CONFLICT (username) DO NOTHING;
+          EOF
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DB_PASSWORD

@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: {{ .Values.ingress.tls.secretName }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /api/profile
+        pathType: Prefix
+        backend:
+          service:
+            name: profile-service
+            port:
+              number: {{ .Values.service.profile.port }}
+      - path: /api/notify
+        pathType: Prefix
+        backend:
+          service:
+            name: notification-service
+            port:
+              number: {{ .Values.service.notification.port }}
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: {{ .Values.service.auth.port }}
