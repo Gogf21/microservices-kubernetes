@@ -62,3 +62,6 @@ kubectl rollout restart deployment/notification-service -n exam-kyznetsov
 # 4. Зайти в под и посмотреть файл
 kubectl exec -it -n exam-kyznetsov deployment/notification-service -- cat /cache/notifications.log
 kubectl exec -it -n exam-kyznetsov deployment/notification-service -- bash
+
+#PVC
+kubectl get pvc -n exam-kyznetsov
