@@ -23,6 +23,13 @@ spec:
             name: profile-service
             port:
               number: {{ .Values.service.profile.port }}
+      - path: /profile
+        pathType: Prefix
+        backend:
+          service:
+            name: profile-service
+            port:
+              number: {{ .Values.service.profile.port }}
       - path: /api/notify
         pathType: Prefix
         backend:
