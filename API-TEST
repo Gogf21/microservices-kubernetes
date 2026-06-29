@@ -27,3 +27,6 @@ curl -s -k -X POST https://app-06.example.com/api/notify \
   -d '{"user_id": 1, "message": "Тест через Ingress"}' \
   | jq .
 
+#ПРОСМОТР ЛОГОВ УВЕДОМЛЕНИЙ
+kubectl logs -n exam-kyznetsov deployment/notification-service -f
+kubectl logs -n exam-kyznetsov deployment/notification-service --tail=20
