@@ -8,3 +8,48 @@ helm upgrade --install user-management . \
   --namespace exam-kyznetsov \
   --create-namespace \
   --values ./values-dev.yaml
+
+
+minikube start
+minikube addons enable ingress
+eval $(minikube docker-env)
+
+cd services/auth-service && docker build -t auth-service:latest .
+cd ../profile-service && docker build -t profile-service:latest .
+cd ../notification-service && docker build -t notification-service:latest .
+
+echo "$(minikube ip) app-06.example.com" | sudo tee -a /etc/hosts
+
+🔹 Просмотр ресурсов
+───────────────────────────────────────────────────────────────────────────────
+kubectl get all -n exam-kyznetsov
+kubectl get pods -n exam-kyznetsov
+kubectl get svc -n exam-kyznetsov
+kubectl get ingress -n exam-kyznetsov
+kubectl get pvc -n exam-kyznetsov
+
+🔹 Логи
+───────────────────────────────────────────────────────────────────────────────
+kubectl logs -n exam-kyznetsov deployment/auth-service --tail=30
+kubectl logs -n exam-kyznetsov deployment/profile-service --tail=30
+kubectl logs -n exam-kyznetsov deployment/notification-service --tail=30
+
+🔹 CronJob логи
+───────────────────────────────────────────────────────────────────────────────
+JOB=$(kubectl get jobs -n exam-kyznetsov -o name | grep log-cronjob | head -1)
+kubectl logs -n exam-kyznetsov $JOB
+
+🔹 Проверка БД
+───────────────────────────────────────────────────────────────────────────────
+kubectl exec -it -n exam-kyznetsov postgres-db-0 -- psql -U admin -d userdb -c "SELECT * FROM users;"
+
+helm uninstall user-management -n exam-kyznetsov
+kubectl delete all --all -n exam-kyznetsov
+kubectl delete pvc --all -n exam-kyznetsov
+kubectl delete namespace exam-kyznetsov
+
+# УДАЛЕНИЕ ПОДОВ
+# Удалить все поды сервиса
+kubectl delete pods -n exam-kyznetsov -l app=auth-service
+kubectl delete pods -n exam-kyznetsov -l app=profile-service
+kubectl delete pods -n exam-kyznetsov -l app=notification-service
