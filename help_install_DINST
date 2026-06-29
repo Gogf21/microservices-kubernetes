@@ -55,6 +55,10 @@ kubectl delete pods -n exam-kyznetsov -l app=auth-service
 kubectl delete pods -n exam-kyznetsov -l app=profile-service
 kubectl delete pods -n exam-kyznetsov -l app=notification-service
 
+kubectl rollout restart deployment/auth-service -n exam-kyznetsov
+kubectl rollout restart deployment/profile-service -n exam-kyznetsov
+kubectl rollout restart deployment/notification-service -n exam-kyznetsov
+
 # 4. Зайти в под и посмотреть файл
 kubectl exec -it -n exam-kyznetsov deployment/notification-service -- cat /cache/notifications.log
 kubectl exec -it -n exam-kyznetsov deployment/notification-service -- bash
