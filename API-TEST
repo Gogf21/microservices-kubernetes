@@ -1,0 +1,29 @@
+MINIKUBE_IP=$(minikube ip)
+echo "Minikube IP: $MINIKUBE_IP"
+
+#API/LOGIN
+# Логин и получение токена
+TOKEN=$(curl -s -X POST http://$(minikube ip):30082/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin123"}' \
+  | jq -r '.token')
+
+echo "Токен: $TOKEN"
+
+#API/PROFILE
+# Проверка профиля (JSON)
+curl -s -k https://app-06.example.com/api/profile \
+  -H "Host: app-06.example.com" \
+  --resolve "app-06.example.com:443:$(minikube ip)" \
+  -H "Authorization: Bearer $TOKEN" \
+  | jq .
+
+
+# Отправить уведомление
+curl -s -k -X POST https://app-06.example.com/api/notify \
+  -H "Host: app-06.example.com" \
+  --resolve "app-06.example.com:443:$(minikube ip)" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": 1, "message": "Тест через Ingress"}' \
+  | jq .
+

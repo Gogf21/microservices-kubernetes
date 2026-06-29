@@ -1,4 +1,0 @@
-# Отправить уведомление
-curl -X POST http://$(minikube ip):8081/api/notify \
-  -H "Content-Type: application/json" \
-  -d '{"user_id": 1, "message": "Тестовое уведомление"}'
